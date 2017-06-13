@@ -31,22 +31,32 @@ void loop() {
     }
     
     if (IsValidMessage())
-      SendMessageToReceiver();
+      NotifySensorIsTriggered();
   }
 
-  if (IsWiredSensorTriggered()){
-    digitalWrite(pinOutputLed, HIGH);
-    SendMessageToReceiver();
-    digitalWrite(pinOutputLed, LOW);
-  }  
+  if (IsWiredSensorTriggered())
+    NotifySensorIsTriggered();
 }
 
 boolean IsValidMessage(){
-  ((actualMessage[0] == expectedMessage[0]) && (actualMessage[1] == expectedMessage[1]) && (actualMessage[2] == expectedMessage[2]) && (actualMessage[3] == expectedMessage[3]))
+  (actualMessage[0] == expectedMessage[0]) && (actualMessage[1] == expectedMessage[1]) && (actualMessage[2] == expectedMessage[2]) && (actualMessage[3] == expectedMessage[3]);
 }
 
 boolean IsWiredSensorTriggered(){
-  digitalRead(pinInputSensor1) == HIGH || digitalRead(pinInputSensor2) == HIGH
+  (digitalRead(pinInputSensor1) == HIGH) || (digitalRead(pinInputSensor2) == HIGH);
+}
+
+void NotifySensorIsTriggered(){
+  // temporarily stop the receiver, so this station is not receiving its own message
+  vw_rx_stop();
+  delay(400);
+
+  digitalWrite(pinOutputLed, HIGH);
+  SendMessageToReceiver();
+  digitalWrite(pinOutputLed, LOW);
+
+  // start listening again
+  vw_rx_start();
 }
 
 void SendMessageToReceiver(){
