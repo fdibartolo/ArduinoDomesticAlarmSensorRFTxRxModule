@@ -16,6 +16,7 @@ void setup() {
   vw_rx_start();
 
   digitalWrite(pinOutputLed, LOW);
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -25,10 +26,12 @@ void loop() {
   //listening for wireless sensors
   if (vw_get_message(buf, &buflen)) // Non-blocking 
   {
+    Serial.print("New message in: ");
     int i; 
     for (i = 0; i < buflen; i++) {
       actualMessage[i] = buf[i];
     }
+    Serial.println(actualMessage);
     
     if (IsValidMessage())
       NotifySensorIsTriggered();
@@ -49,13 +52,15 @@ boolean IsWiredSensorTriggered(){
 void NotifySensorIsTriggered(){
   // temporarily stop the receiver, so this station is not receiving its own message
   vw_rx_stop();
-  delay(400);
+  delay(500);
 
   digitalWrite(pinOutputLed, HIGH);
+  Serial.println("Message sent to receiver!");
   SendMessageToReceiver();
   digitalWrite(pinOutputLed, LOW);
 
   // start listening again
+  delay(1000);
   vw_rx_start();
 }
 
