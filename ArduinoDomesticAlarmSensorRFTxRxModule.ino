@@ -39,11 +39,11 @@ void loop() {
 }
 
 boolean IsValidMessage(){
-  (actualMessage[0] == expectedMessage[0]) && (actualMessage[1] == expectedMessage[1]) && (actualMessage[2] == expectedMessage[2]) && (actualMessage[3] == expectedMessage[3]);
+  return ((actualMessage[0] == expectedMessage[0]) && (actualMessage[1] == expectedMessage[1]) && (actualMessage[2] == expectedMessage[2]) && (actualMessage[3] == expectedMessage[3]));
 }
 
 boolean IsWiredSensorTriggered(){
-  (digitalRead(pinInputSensor1) == HIGH) || (digitalRead(pinInputSensor2) == HIGH);
+  return ((digitalRead(pinInputSensor1) == HIGH) || (digitalRead(pinInputSensor2) == HIGH));
 }
 
 void NotifySensorIsTriggered(){
